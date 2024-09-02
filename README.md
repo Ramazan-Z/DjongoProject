@@ -1,1 +1,1 @@
-# DjongoProject
+# Учебный проект Python/Django
