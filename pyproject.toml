@@ -8,6 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^5.1"
+python-dotenv = "^1.0.1"
+ipython = "^8.27.0"
+pillow = "^10.4.0"
+psycopg2-binary = "^2.9.9"
 
 
 [tool.poetry.group.lint.dependencies]
@@ -16,6 +20,7 @@ isort = "^5.13.2"
 flake8 = "^7.1.1"
 mypy = "^1.11.2"
 django-stubs = "^5.0.4"
+types-psycopg2 = "^2.9.21.20240819"
 
 
 [build-system]
