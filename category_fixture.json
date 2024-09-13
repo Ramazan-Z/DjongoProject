@@ -1,0 +1,26 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 8,
+    "fields": {
+        "title": "Бытовая техника",
+        "description": "Техника для дома"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 9,
+    "fields": {
+        "title": "Электроника",
+        "description": "Техника для души"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 10,
+    "fields": {
+        "title": "Аксесуары",
+        "description": "На все случаи жизни"
+    }
+}
+]
