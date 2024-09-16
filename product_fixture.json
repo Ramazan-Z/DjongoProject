@@ -1,0 +1,119 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 16,
+    "fields": {
+        "title": "Пылесос",
+        "description": "Компактный и мощный",
+        "image": "",
+        "category": 8,
+        "price": 10000,
+        "created_at": "2024-09-13T09:27:45.472Z",
+        "updated_at": "2024-09-13T09:27:45.472Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 17,
+    "fields": {
+        "title": "Холодильник",
+        "description": "Вместительный и экономичный",
+        "image": "",
+        "category": 8,
+        "price": 40000,
+        "created_at": "2024-09-13T09:28:18.936Z",
+        "updated_at": "2024-09-13T09:28:18.936Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 18,
+    "fields": {
+        "title": "Стиральныя машина",
+        "description": "Объемная и стильная",
+        "image": "",
+        "category": 8,
+        "price": 30000,
+        "created_at": "2024-09-13T09:28:48.815Z",
+        "updated_at": "2024-09-13T09:28:48.815Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 19,
+    "fields": {
+        "title": "Смарфон",
+        "description": "Производительный и надежный",
+        "image": "",
+        "category": 9,
+        "price": 30000,
+        "created_at": "2024-09-13T09:29:45.987Z",
+        "updated_at": "2024-09-13T09:29:45.987Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 20,
+    "fields": {
+        "title": "Ноутбук",
+        "description": "Быстрый и легкий",
+        "image": "",
+        "category": 9,
+        "price": 90000,
+        "created_at": "2024-09-13T09:30:13.703Z",
+        "updated_at": "2024-09-13T09:30:13.703Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 21,
+    "fields": {
+        "title": "Телевизор",
+        "description": "Большой и яркий",
+        "image": "",
+        "category": 9,
+        "price": 50000,
+        "created_at": "2024-09-13T09:30:41.757Z",
+        "updated_at": "2024-09-13T09:30:41.757Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 22,
+    "fields": {
+        "title": "Гарнитура",
+        "description": "Чистейший звук",
+        "image": "",
+        "category": 10,
+        "price": 3000,
+        "created_at": "2024-09-13T09:31:52.557Z",
+        "updated_at": "2024-09-13T09:31:52.557Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 23,
+    "fields": {
+        "title": "Зарядное устройство",
+        "description": "Быстрый заряд",
+        "image": "",
+        "category": 10,
+        "price": 1500,
+        "created_at": "2024-09-13T09:32:34.864Z",
+        "updated_at": "2024-09-13T09:32:34.864Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 24,
+    "fields": {
+        "title": "Клавиатура",
+        "description": "Цветная подсветка",
+        "image": "",
+        "category": 10,
+        "price": 4000,
+        "created_at": "2024-09-13T09:33:45.803Z",
+        "updated_at": "2024-09-13T09:33:45.803Z"
+    }
+}
+]
