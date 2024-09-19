@@ -2,10 +2,14 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from catalog import models
+
 
 def home(request: WSGIRequest) -> HttpResponse:
     """Контроллер главной страницы"""
-    return render(request, "catalog/home.html")
+    products = models.Product.objects.all()
+    context = {"products": products}
+    return render(request, "catalog/home.html", context=context)
 
 
 def contacts(request: WSGIRequest) -> HttpResponse:
@@ -16,3 +20,10 @@ def contacts(request: WSGIRequest) -> HttpResponse:
         # Здесь мы просто возвращаем простой ответ
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
     return render(request, "catalog/contacts.html")
+
+
+def product_detail(request: WSGIRequest, product_id: int) -> HttpResponse:
+    """Контроллер страницы описания продукта"""
+    product = models.Product.objects.get(id=product_id)
+    context = {"product": product}
+    return render(request, "catalog/product_detail.html", context)
