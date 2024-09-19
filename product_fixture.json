@@ -42,7 +42,7 @@
     "model": "catalog.product",
     "pk": 4,
     "fields": {
-        "title": "Смарфон",
+        "title": "Смартфон",
         "description": "Производительный и надежный",
         "image": "images/smartfon.png",
         "category": 2,
