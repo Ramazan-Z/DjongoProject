@@ -24,6 +24,16 @@ def contacts(request: WSGIRequest) -> HttpResponse:
 
 def product_detail(request: WSGIRequest, product_id: int) -> HttpResponse:
     """Контроллер страницы описания продукта"""
+    products = models.Product.objects.all()
     product = models.Product.objects.get(id=product_id)
-    context = {"product": product}
+
+    index = list(products).index(product)
+    last_product = products[index - 1] if index > 0 else None
+    next_product = products[index + 1] if index < (len(products) - 1) else None
+
+    context = {
+        "last_product": last_product,
+        "product": product,
+        "next_product": next_product,
+    }
     return render(request, "catalog/product_detail.html", context)
