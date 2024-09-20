@@ -15,7 +15,7 @@
         <!--image card-->
         <div class="col-6 d-flex align-items-stretch">
             <div class="card mb-4 box-shadow w-100">
-                <img src={{ product.image.url}} class="img-thumbnail" alt={{ product.title }}>
+                <img src="{{ product.image.url }}" class="img-thumbnail" alt="{{ product.title }}">
             </div>
         </div>
         <!--description card-->
@@ -49,7 +49,7 @@
                             </div>
                         </li>
                     </ul>
-                    <a href={% url "catalog:home" %} class="btn btn-primary">Назад к списку</a>
+                    <a href="{% url 'catalog:home' %}" class="btn btn-primary">Назад к списку</a>
                 </div>
             </div>
         </div>
@@ -57,15 +57,15 @@
     <!--nav buttons-->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class={% if last_product %} "page-item" {% else %} "page-item disabled" {% endif %}>
+            <li class="{% if last_product %} page-item {%else%} page-item disabled {% endif %}">
                 <a class="page-link"
-                    href={% if last_product %}{% url "catalog:product_detail" last_product.pk %}{% else %} "#"
-                    {% endif %}>Предыдущий</a>
+                    href="{% if last_product %}{% url 'catalog:product_detail' last_product.pk %}{% else %} #
+                    {% endif %}">Предыдущий</a>
             </li>
-            <li class={% if next_product %} "page-item" {% else %} "page-item disabled" {% endif %}>
+            <li class="{% if next_product %} page-item {% else %} page-item disabled {% endif %}">
                 <a class="page-link"
-                    href={% if next_product %}{% url "catalog:product_detail" next_product.pk %}{% else %} "#"
-                    {% endif %}>Следующий</a>
+                    href="{% if next_product %}{% url 'catalog:product_detail' next_product.pk %}{% else %} #
+                    {% endif %}">Следующий</a>
             </li>
         </ul>
     </nav>
