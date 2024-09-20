@@ -1,7 +1,7 @@
 [
 {
     "model": "catalog.category",
-    "pk": 8,
+    "pk": 1,
     "fields": {
         "title": "Бытовая техника",
         "description": "Техника для дома"
@@ -9,7 +9,7 @@
 },
 {
     "model": "catalog.category",
-    "pk": 9,
+    "pk": 2,
     "fields": {
         "title": "Электроника",
         "description": "Техника для души"
@@ -17,7 +17,7 @@
 },
 {
     "model": "catalog.category",
-    "pk": 10,
+    "pk": 3,
     "fields": {
         "title": "Аксесуары",
         "description": "На все случаи жизни"
