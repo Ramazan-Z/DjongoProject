@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% include "catalog/navbar.html" %}
+{% include "catalog/includes/navbar.html" %}
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">{{ product.title }}</h1>
@@ -69,6 +69,6 @@
             </li>
         </ul>
     </nav>
-    {% include "catalog/footer.html" %}
+    {% include "catalog/includes/footer.html" %}
 </div>
 {% endblock %}
