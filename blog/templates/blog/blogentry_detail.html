@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{blogentry.heading}}{% endblock %}
+
+{% block content %}
+
+{% include "blog/includes/navbar.html" %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ blogentry.heading }}</h1>
+</div>
+
+<div class="container">
+    <div class="card mb-4 box-shadow">
+        <img src="{% if blogentry.preview %}{{ blogentry.preview.url }}{% endif %}" class="img-thumbnail"
+            alt="{{ blogentry.heading }}">
+        <div class="card-body">
+            <p class="card-text">{{blogentry.content}}</p>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <h6 class="card-title">Создано: {{ blogentry.created_at|date:"d M Y" }}</h6>
+                    <h6 class="card-title">Опубликовано: {% if blogentry.is_publication %}Да{%else%}Нет{% endif %}</h6>
+                </div>
+                <h6>Просмотров: {{ blogentry.view_counter}}</h6>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <a href="{% url 'blog:blogentry_edit' blogentry.pk %}" class="btn btn-secondary">Редактировать</a>
+        <a href="{% url 'blog:blogentry_edit' blogentry.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'blog:blogentry_list' %}" class="btn btn-primary">Вернуться</a>
+    </div>
+    {% include "blog/includes/footer.html" %}
+</div>
+{% endblock %}
