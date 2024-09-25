@@ -27,7 +27,7 @@
     </div>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
         <a href="{% url 'blog:blogentry_edit' blogentry.pk %}" class="btn btn-secondary">Редактировать</a>
-        <a href="{% url 'blog:blogentry_edit' blogentry.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'blog:blogentry_delete' blogentry.pk %}" class="btn btn-danger">Удалить</a>
         <a href="{% url 'blog:blogentry_list' %}" class="btn btn-primary">Вернуться</a>
     </div>
     {% include "blog/includes/footer.html" %}

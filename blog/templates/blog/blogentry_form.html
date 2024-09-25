@@ -1,6 +1,6 @@
 {% extends 'blog/base.html' %}
 
-{% block title %}Новая запись{% endblock %}
+{% block title %}Редактирование записи{% endblock %}
 
 {% block content %}
 
@@ -34,10 +34,10 @@
                 <div class="mb-3">
                     {{ form.is_publication.label_tag }}
                     <input type="checkbox" name="{{ form.is_publication.name }}"
-                        id="{{ form.is_publication.id_for_label }}" value="{{ blogentry.is_publication }}">
+                        id="{{ form.is_publication.id_for_label }}" {% if  blogentry.is_publication %} checked ="" {% endif %}>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <a href="{% url 'blog:blogentry_detail' blogentry.pk %}" class="btn btn-secondary">Отмена</a>
+                <a href="{% url 'blog:blogentry_list' %}" class="btn btn-secondary">Отмена</a>
             </form>
         </div>
     </div>
