@@ -1,4 +1,7 @@
-from django.urls import reverse_lazy
+from typing import Any
+
+from django.db.models.query import QuerySet
+from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
@@ -11,12 +14,24 @@ class BlogEntryListView(ListView):
     model = models.BlogEntry
     context_object_name = "blogentries"
 
+    def get_queryset(self) -> QuerySet:
+        """Переопределение метода"""
+        query_set = super().get_queryset()
+        return query_set.filter(is_publication=True)
+
 
 class BlogEntryDetailView(DetailView):
     """Контроллер страницы с деталями записи"""
 
     model = models.BlogEntry
     context_object_name = "blogentry"
+
+    def get_object(self, queryset: QuerySet[Any, Any] | None = None) -> Any:
+        """Переопределение метода"""
+        self.object = super().get_object(queryset)
+        self.object.view_counter += 1
+        self.object.save()
+        return self.object
 
 
 class BlogEntryCreateView(CreateView):
@@ -36,6 +51,10 @@ class BlogEntryUpdateView(UpdateView):
     template_name = "blog/blogentry_form.html"
     context_object_name = "blogentry"
     success_url = reverse_lazy("blog:blogentry_list")
+
+    def get_success_url(self) -> str:
+        """Переопределение метода"""
+        return reverse("blog:blogentry_detail", args=[self.kwargs.get("pk")])
 
 
 class BlogEntryDeleteView(DeleteView):
