@@ -1,39 +1,44 @@
+from typing import Any
+
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.views.generic import DetailView, ListView, TemplateView
 
 from catalog import models
 
 
-def home(request: WSGIRequest) -> HttpResponse:
+class ProductsListView(ListView):
     """Контроллер главной страницы"""
-    products = models.Product.objects.all()
-    context = {"products": products}
-    return render(request, "catalog/home.html", context=context)
+
+    model = models.Product
+    template_name = "catalog/home.html"
+    context_object_name = "products"
 
 
-def contacts(request: WSGIRequest) -> HttpResponse:
+class ContactsTemplateView(TemplateView):
     """Контроллер страницы контактов"""
-    if request.method == "POST":
-        # Получение данных из формы
+
+    template_name = "catalog/contacts.html"
+
+    def post(self, request: WSGIRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Переопределение метода"""
         name = request.POST.get("name")
-        # Здесь мы просто возвращаем простой ответ
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, "catalog/contacts.html")
 
 
-def product_detail(request: WSGIRequest, product_id: int) -> HttpResponse:
+class ProductDetailView(DetailView):
     """Контроллер страницы описания продукта"""
-    products = models.Product.objects.all()
-    product = models.Product.objects.get(id=product_id)
 
-    index = list(products).index(product)
-    last_product = products[index - 1] if index > 0 else None
-    next_product = products[index + 1] if index < (len(products) - 1) else None
+    model = models.Product
+    template_name = "catalog/product_detail.html"
+    context_object_name = "product"
 
-    context = {
-        "last_product": last_product,
-        "product": product,
-        "next_product": next_product,
-    }
-    return render(request, "catalog/product_detail.html", context)
+    def get_context_data(self, **kwargs: Any) -> dict[str, QuerySet]:
+        """Переопределение метода"""
+        context = super().get_context_data(**kwargs)
+        products = self.model.objects.all()
+        index = list(products).index(context["product"])
+        context["last_product"] = products[index - 1] if index > 0 else None
+        context["next_product"] = products[index + 1] if index < (len(products) - 1) else None
+        return context

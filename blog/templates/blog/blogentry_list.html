@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Записи{% endblock %}
+
+{% block content %}
+
+{% include "blog/includes/navbar.html" %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Список записей</h1>
+</div>
+
+<div class="container">
+    <div class="list-group">
+        {% for blogentry in blogentries %}
+        <a href="{% url 'blog:blogentry_detail' blogentry.pk %}" class="list-group-item list-group-item-action mt-3"
+            aria-current="true">
+            <h5 class="mb-1">{{ blogentry.heading }}</h5>
+            <p class="mb-1">{{ blogentry.content|truncatechars:100 }}</p>
+            <small>Создано: {{ blogentry.created_at|date:"d M Y" }}</small>
+        </a>
+        <div>
+            <small>Просмотров: {{ blogentry.view_counter}}</small>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'blog:blogentry_new' %}" class="btn btn-primary mt-5">Новая запись</a>
+    {% include "blog/includes/footer.html" %}
+</div>
+{% endblock %}

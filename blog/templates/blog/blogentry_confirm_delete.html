@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Удаление записи{% endblock %}
+
+{% block content %}
+
+{% include "blog/includes/navbar.html" %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Удаление записи</h1>
+</div>
+
+<div class="container">
+    <p>Вы уверены, что хотите удалить "{{ blogentry.heading }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'blog:blogentry_detail' blogentry.pk %}" class="btn btn-secondary">Отмена</a>
+    </form>
+    {% include "blog/includes/footer.html" %}
+</div>
+{% endblock %}
