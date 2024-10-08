@@ -38,9 +38,7 @@
                 </div>
                 <div class="mb-3">
                     {{ form.is_publication.label_tag }}
-                    <input type="checkbox" name="{{ form.is_publication.name }}"
-                        id="{{ form.is_publication.id_for_label }}" {% if  blogentry.is_publication %} checked=""
-                        {% endif %}>
+                    {{ form.is_publication }}
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
                 <a href="{% url 'blog:blogentry_list' %}" class="btn btn-secondary">Отмена</a>
