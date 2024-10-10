@@ -15,7 +15,8 @@
         <!--image card-->
         <div class="col-6 d-flex align-items-stretch">
             <div class="card mb-4 box-shadow w-100">
-                <img src="{{ product.image.url }}" class="img-thumbnail" alt="{{ product.title }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-thumbnail"
+                    alt="{{ product.title }}">
             </div>
         </div>
         <!--description card-->
@@ -49,7 +50,13 @@
                             </div>
                         </li>
                     </ul>
-                    <a href="{% url 'catalog:home' %}" class="btn btn-primary">Назад к списку</a>
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <a href="{% url 'catalog:product_edit' product.pk %}"
+                            class="btn btn-secondary">Редактировать</a>
+                        <a href="{% url 'catalog:product_confirm_delete' product.pk %}"
+                            class="btn btn-danger">Удалить</a>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-primary">Назад</a>
+                    </div>
                 </div>
             </div>
         </div>

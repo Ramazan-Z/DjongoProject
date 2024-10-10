@@ -9,6 +9,7 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Skystore</h1>
     <p class="head">Список товаров</p>
+    <a href="{% url 'catalog:product_new' %}" class="btn btn-primary mt-5">Добавить товар</a>
 </div>
 
 <div class="container">
@@ -16,7 +17,8 @@
         {% for product in products%}
         <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
             <div class="card mb-4 box-shadow w-100">
-                <img src="{{ product.image.url }}" class="img-thumbnail h-50" alt="{{ product.title }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-thumbnail h-50"
+                    alt="{{ product.title }}">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title">{{product.title}}</h5>
                     <p class="card-text">{{product.description|truncatechars:100}}</p>

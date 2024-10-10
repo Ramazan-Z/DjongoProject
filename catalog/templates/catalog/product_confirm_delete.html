@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Удаление товара{% endblock %}
+
+{% block content %}
+
+{% include "catalog/includes/navbar.html" %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Удаление товара</h1>
+</div>
+
+<div class="container">
+    <p>Вы уверены, что хотите удалить "{{ product.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-secondary">Отмена</a>
+    </form>
+    {% include "catalog/includes/footer.html" %}
+</div>
+{% endblock %}
