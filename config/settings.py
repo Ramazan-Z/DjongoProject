@@ -107,3 +107,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Модель пользователя
 AUTH_USER_MODEL = "users.CustomUser"
+
+# URL для перенаправления после успешного входа
+LOGIN_REDIRECT_URL = "/home/"
+
+# URL для перенаправления после выхода из системы
+LOGOUT_REDIRECT_URL = "/home/"

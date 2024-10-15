@@ -1,10 +1,10 @@
-{% extends 'blog/base.html' %}
+{% extends 'catalog/base.html' %}
 
 {% block title %}Записи{% endblock %}
 
 {% block content %}
 
-{% include "blog/includes/navbar.html" %}
+{% include "catalog/includes/navbar.html" %}
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Список записей</h1>
@@ -25,6 +25,6 @@
         {% endfor %}
     </div>
     <a href="{% url 'blog:blogentry_new' %}" class="btn btn-primary mt-5">Новая запись</a>
-    {% include "blog/includes/footer.html" %}
+    {% include "catalog/includes/footer.html" %}
 </div>
 {% endblock %}
