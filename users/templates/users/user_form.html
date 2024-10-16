@@ -1,0 +1,25 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+{% include "catalog/includes/navbar.html" %}
+
+<div class="container">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Регистрация</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" class="form-floating" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+                <a href="{% url 'catalog:home' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+    {% include "catalog/includes/footer.html" %}
+</div>
+{% endblock %}
