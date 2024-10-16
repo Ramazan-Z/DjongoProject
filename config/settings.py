@@ -114,6 +114,9 @@ LOGIN_REDIRECT_URL = "catalog:home"
 # URL для перенаправления после выхода из системы
 LOGOUT_REDIRECT_URL = "catalog:home"
 
+# URL для перенаправления неавторизованных пользователей
+LOGIN_URL = "users:login"
+
 # Настройки почтового сервера
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")

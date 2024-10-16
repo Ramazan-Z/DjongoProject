@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
@@ -34,7 +35,7 @@ class BlogEntryDetailView(DetailView):
         return self.object
 
 
-class BlogEntryCreateView(CreateView):
+class BlogEntryCreateView(LoginRequiredMixin, CreateView):
     """Контроллер страницы создания записи"""
 
     model = models.BlogEntry
@@ -43,7 +44,7 @@ class BlogEntryCreateView(CreateView):
     success_url = reverse_lazy("blog:blogentry_list")
 
 
-class BlogEntryUpdateView(UpdateView):
+class BlogEntryUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер страницы обновления записи"""
 
     model = models.BlogEntry
@@ -57,7 +58,7 @@ class BlogEntryUpdateView(UpdateView):
         return reverse("blog:blogentry_detail", args=[self.kwargs.get("pk")])
 
 
-class BlogEntryDeleteView(DeleteView):
+class BlogEntryDeleteView(LoginRequiredMixin, DeleteView):
     model = models.BlogEntry
     template_name = "blog/blogentry_confirm_delete.html"
     context_object_name = "blogentry"

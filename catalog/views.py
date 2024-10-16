@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
@@ -37,7 +38,7 @@ class ProductDetailView(DetailView):
         return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Контроллер страницы создания товара"""
 
     model = models.Product
@@ -46,7 +47,7 @@ class ProductCreateView(CreateView):
     success_url = reverse_lazy("catalog:home")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер страницы обновления товара"""
 
     model = models.Product
@@ -56,7 +57,7 @@ class ProductUpdateView(UpdateView):
     success_url = reverse_lazy("catalog:home")
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Контроллер страницы удаления товара"""
 
     model = models.Product
