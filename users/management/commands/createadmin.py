@@ -7,6 +7,7 @@ from users.models import CustomUser
 
 
 class Command(BaseCommand):
+    help = "Создание пользователя с правами администратора"
 
     def handle(self, *args: Any, **options: Any) -> None:
         user = CustomUser.objects.create(
