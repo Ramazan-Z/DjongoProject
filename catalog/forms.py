@@ -25,7 +25,7 @@ class ProductForm(forms.ModelForm):
         """Метаданные формы"""
 
         model = Product
-        exclude = ["created_at", "updated_at"]
+        exclude = ["created_at", "updated_at", "owner"]
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Добавление стилей в инициализацию"""
@@ -60,3 +60,13 @@ class ProductForm(forms.ModelForm):
                 self.add_error("title", f"Слово {word} запещено!")
             if word.lower() in description.lower():
                 self.add_error("description", f"Слово {word} запещено!")
+
+
+class ProductModeratorForm(forms.ModelForm):
+    """Класс формы продукта для модератора"""
+
+    class Meta:
+        """Метаданные формы"""
+
+        model = Product
+        fields = ["status"]
