@@ -51,10 +51,12 @@
                         </li>
                     </ul>
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        {% if perms.catalog.can_unpublish_product or product.owner == user %}
                         <a href="{% url 'catalog:product_edit' product.pk %}"
                             class="btn btn-secondary">Редактировать</a>
                         <a href="{% url 'catalog:product_confirm_delete' product.pk %}"
                             class="btn btn-danger">Удалить</a>
+                        {% endif %}
                         <a href="{% url 'catalog:home' %}" class="btn btn-primary">Назад</a>
                     </div>
                 </div>

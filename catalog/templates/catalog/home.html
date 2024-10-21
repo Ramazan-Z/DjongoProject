@@ -9,7 +9,9 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Skystore</h1>
     <p class="head">Список товаров</p>
+    {% if user.is_authenticated %}
     <a href="{% url 'catalog:product_new' %}" class="btn btn-primary mt-5">Добавить товар</a>
+    {% endif %}
 </div>
 
 <div class="container">
