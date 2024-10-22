@@ -1,15 +1,19 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.db.models.query import QuerySet
 from django.forms.models import ModelFormMetaclass
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog import models
+from config.settings import CACH_ENABLED
 
 from .forms import ProductForm, ProductModeratorForm
 
@@ -21,17 +25,25 @@ class ProductsListView(ListView):
     template_name = "catalog/home.html"
     context_object_name = "products"
 
-    def get_queryset(self) -> QuerySet:
+    def get_queryset(self) -> Any:
         """Отображение только опубликованных товаров для обычных пользователей,
         и всех для модератора и админа"""
 
-        query_set = super().get_queryset()
+        if CACH_ENABLED:
+            queryset = cache.get("queryset")
+            if not queryset:
+                queryset = super().get_queryset()
+                cache.set("queryset", queryset, 5 * 60)
+        else:
+            queryset = super().get_queryset()
+
         user = self.request.user
         if user.has_perm("catalog.delete_product"):
-            return query_set
-        return query_set.filter(status=True)
+            return queryset
+        return queryset.filter(status=True)
 
 
+@method_decorator(cache_page(5 * 60), name="dispatch")
 class ProductDetailView(DetailView):
     """Контроллер страницы описания товара"""
 
@@ -60,9 +72,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form: ProductForm) -> HttpResponse:
         """Установка текущего пользователя владельцем товара"""
 
-        self.object = form.save()
-        self.object.owner = self.request.user
-        self.object.save()
+        object = form.save()
+        object.owner = self.request.user
+        object.save()
         return super().form_valid(form)
 
 
@@ -109,7 +121,8 @@ class ContactsTemplateView(TemplateView):
 
     template_name = "catalog/contacts.html"
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+    @staticmethod
+    def post(request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Переопределение метода"""
         name = request.POST.get("name")
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
