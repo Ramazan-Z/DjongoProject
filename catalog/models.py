@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -46,13 +47,26 @@ class Product(models.Model):
         help_text="Загрузите изображение товара",
     )
     # Категория (ForeignKey)
-    category: models.Field = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+    category: models.Field = models.ForeignKey(
+        Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="products"
+    )
     # Цена
     price: models.Field = models.IntegerField(verbose_name="Цена", help_text="Введите цену товара")
     # Дата создания
     created_at: models.Field = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     # Дата последнего изменения
     updated_at: models.Field = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
+    # Владелец
+    owner: models.Field = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Владелец",
+        related_name="products",
+    )
+    # Статус публикации
+    status: models.Field = models.BooleanField(default=False, verbose_name="Статус публикации")
 
     def __str__(self) -> str:
         """Строковое представление товара"""
@@ -65,3 +79,4 @@ class Product(models.Model):
         verbose_name = "Товар"  # Отображаемое имя в ед. числе
         verbose_name_plural = "Товары"  # Отображаемое имя во мн. числе
         ordering = ["title"]  # Порядок сортировки
+        permissions = [("can_unpublish_product", "Может отменять публикацию")]

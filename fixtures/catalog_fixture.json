@@ -1,5 +1,29 @@
 [
 {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "title": "Бытовая техника",
+        "description": "Техника для дома"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "title": "Электроника",
+        "description": "Техника для души"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "title": "Аксесуары",
+        "description": "На все случаи жизни"
+    }
+},
+{
     "model": "catalog.product",
     "pk": 1,
     "fields": {
@@ -9,7 +33,9 @@
         "category": 1,
         "price": 10000,
         "created_at": "2024-09-13T09:27:45.472Z",
-        "updated_at": "2024-09-18T13:57:41.702Z"
+        "updated_at": "2024-09-18T13:57:41.702Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -22,7 +48,9 @@
         "category": 1,
         "price": 40000,
         "created_at": "2024-09-13T09:28:18.936Z",
-        "updated_at": "2024-09-18T13:58:13.228Z"
+        "updated_at": "2024-09-18T13:58:13.228Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -35,7 +63,9 @@
         "category": 1,
         "price": 30000,
         "created_at": "2024-09-13T09:28:48.815Z",
-        "updated_at": "2024-09-18T13:58:34.081Z"
+        "updated_at": "2024-09-18T13:58:34.081Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -48,7 +78,9 @@
         "category": 2,
         "price": 30000,
         "created_at": "2024-09-13T09:29:45.987Z",
-        "updated_at": "2024-09-18T13:58:49.196Z"
+        "updated_at": "2024-09-18T13:58:49.196Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -61,7 +93,9 @@
         "category": 2,
         "price": 90000,
         "created_at": "2024-09-13T09:30:13.703Z",
-        "updated_at": "2024-09-18T13:59:14.156Z"
+        "updated_at": "2024-09-18T13:59:14.156Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -74,7 +108,9 @@
         "category": 2,
         "price": 50000,
         "created_at": "2024-09-13T09:30:41.757Z",
-        "updated_at": "2024-09-18T13:59:42.416Z"
+        "updated_at": "2024-09-18T13:59:42.416Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -87,7 +123,9 @@
         "category": 3,
         "price": 3000,
         "created_at": "2024-09-13T09:31:52.557Z",
-        "updated_at": "2024-09-18T14:00:01.808Z"
+        "updated_at": "2024-10-18T19:28:14.329Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -100,7 +138,9 @@
         "category": 3,
         "price": 1500,
         "created_at": "2024-09-13T09:32:34.864Z",
-        "updated_at": "2024-09-18T14:00:17.352Z"
+        "updated_at": "2024-10-18T19:27:14.641Z",
+        "owner": null,
+        "status": false
     }
 },
 {
@@ -113,7 +153,9 @@
         "category": 3,
         "price": 4000,
         "created_at": "2024-09-13T09:33:45.803Z",
-        "updated_at": "2024-09-18T14:00:32.829Z"
+        "updated_at": "2024-10-18T19:29:01.610Z",
+        "owner": null,
+        "status": false
     }
 }
 ]

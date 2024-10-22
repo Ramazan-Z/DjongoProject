@@ -9,7 +9,7 @@ from .models import CustomUser
 class CustomUserCreationForm(UserCreationForm):
     usable_password = None
 
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = CustomUser
         fields = (
             "email",
@@ -27,7 +27,7 @@ class CustomUserCreationForm(UserCreationForm):
         """Валидация номера телефона"""
         phone_number = self.cleaned_data.get("phone_number")
         if phone_number and not phone_number.isdigit():
-            raise forms.ValidationError("Номер должен состоять только из цыфр")
+            raise forms.ValidationError("Номер должен состоять только из цифр")
         return phone_number
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

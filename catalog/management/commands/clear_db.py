@@ -1,8 +1,11 @@
 from typing import Any
 
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
+from blog.models import BlogEntry
 from catalog.models import Category, Product
+from users.models import CustomUser
 
 
 class Command(BaseCommand):
@@ -12,4 +15,7 @@ class Command(BaseCommand):
         """Удаляем существующие записи"""
         Product.objects.all().delete()
         Category.objects.all().delete()
+        BlogEntry.objects.all().delete()
+        Group.objects.all().delete()
+        CustomUser.objects.all().delete()
         self.stdout.write(self.style.SUCCESS("The data has been successfully deleted from the database"))
