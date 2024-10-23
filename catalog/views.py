@@ -50,15 +50,19 @@ class ProductDetailView(DetailView):
     model = models.Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
+    return_url = reverse_lazy("catalog:home")
 
     def get_context_data(self, **kwargs: Any) -> dict[str, QuerySet]:
         """Переопределение метода"""
         context = super().get_context_data(**kwargs)
-        products = self.model.objects.all()
-        index = list(products).index(context["product"])
-        context["last_product"] = products[index - 1] if index > 0 else None
-        context["next_product"] = products[index + 1] if index < (len(products) - 1) else None
+        context["return_url"] = self.return_url
         return context
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return_url_marker = request.GET.get("return")
+        if return_url_marker:
+            self.return_url = reverse_lazy("catalog:categories")
+        return super().get(request, *args, **kwargs)
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -72,9 +76,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form: ProductForm) -> HttpResponse:
         """Установка текущего пользователя владельцем товара"""
 
-        object = form.save()
-        object.owner = self.request.user
-        object.save()
+        product = form.save()
+        product.owner = self.request.user
+        product.save()
         return super().form_valid(form)
 
 
@@ -126,3 +130,45 @@ class ContactsTemplateView(TemplateView):
         """Переопределение метода"""
         name = request.POST.get("name")
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+
+
+class CategoriesTemplateView(TemplateView):
+    """Контроллер страницы категорий"""
+
+    model = models.Product
+    template_name = "catalog/categories.html"
+    context_object_name = "products"
+    current_category = None
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, QuerySet]:
+        context = super().get_context_data(**kwargs)
+        context["categories"] = self.get_categories()
+        context["current_category"] = self.get_current_category()
+        context[self.context_object_name] = self.get_queryset()
+        return context
+
+    def get_queryset(self) -> Any:
+        return self.model.objects.filter(category=self.get_current_category())
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        category = request.POST.get("category")
+        self.set_current_category(category)
+        return super().get(request, *args, **kwargs)
+
+    def get_categories(self) -> QuerySet:
+        return models.Category.objects.all()
+
+    def get_current_category(self) -> Any:
+        current_category = cache.get("current_category")
+        if current_category:
+            return current_category
+        else:
+            self.set_current_category()
+            return self.current_category
+
+    def set_current_category(self, category: str | None = None) -> None:
+        if category:
+            self.current_category = models.Category.objects.get(title=category)
+        else:
+            self.current_category = list(models.Category.objects.all())[0]
+        cache.set("current_category", self.current_category)

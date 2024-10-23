@@ -1,0 +1,42 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Категории{% endblock %}
+
+{% block content %}
+
+{% include "catalog/includes/navbar.html" %}
+
+<div class="container">
+    <ul class="nav nav-pills">
+        {% for category in categories %}
+        <li class="nav-item">
+            <form method="post" action="">
+                {% csrf_token %}
+                <input class="nav-link {% if category == current_category %}active{% endif %}" name="category"
+                    type="submit" value="{{ category.title }}">
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto">
+        <p class="head">{{ current_category.description }}</p>
+    </div>
+    <div class="row text-center">
+        {% for product in products%}
+        <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
+            <div class="card mb-4 box-shadow w-100">
+                <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-thumbnail h-50"
+                    alt="{{ product.title }}">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    <p class="card-text">{{product.description|truncatechars:100}}</p>
+                    <a href="{% url 'catalog:product_detail' product.pk %}?return={{ current_category.pk }}"
+                        class="btn btn-primary">Просмотр</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% include "catalog/includes/footer.html" %}
+</div>
+{% endblock %}
