@@ -6,12 +6,15 @@ from django.db.models.query import QuerySet
 from django.forms.models import ModelFormMetaclass
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog import models
 
 from .forms import ProductForm, ProductModeratorForm
+from .services import CategoriesServices, ProductServices
 
 
 class ProductsListView(ListView):
@@ -21,32 +24,38 @@ class ProductsListView(ListView):
     template_name = "catalog/home.html"
     context_object_name = "products"
 
-    def get_queryset(self) -> QuerySet:
-        """Отображение только опубликованных товаров для обычных пользователей,
-        и всех для модератора и админа"""
-
-        query_set = super().get_queryset()
+    def get_queryset(self) -> Any:
+        """Кэширование и проверка прав пользователя"""
+        queryset = super().get_queryset()
+        queryset = ProductServices.check_cache(queryset)
+        # Проверка прав пользователя
         user = self.request.user
         if user.has_perm("catalog.delete_product"):
-            return query_set
-        return query_set.filter(status=True)
+            return queryset
+        return queryset.filter(status=True)
 
 
+@method_decorator(cache_page(5 * 60), name="dispatch")
 class ProductDetailView(DetailView):
     """Контроллер страницы описания товара"""
 
     model = models.Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
+    return_url = reverse_lazy("catalog:home")  # URL для кнопки "Назад"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, QuerySet]:
-        """Переопределение метода"""
+        """Передача в шаблон URL для кнопки «Назад»"""
         context = super().get_context_data(**kwargs)
-        products = self.model.objects.all()
-        index = list(products).index(context["product"])
-        context["last_product"] = products[index - 1] if index > 0 else None
-        context["next_product"] = products[index + 1] if index < (len(products) - 1) else None
+        context["return_url"] = self.return_url
         return context
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Установка URL для кнопки «Назад», если указано в запросе"""
+        return_url_marker = request.GET.get("return")
+        if return_url_marker:
+            self.return_url = reverse_lazy("catalog:categories")
+        return super().get(request, *args, **kwargs)
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -59,10 +68,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: ProductForm) -> HttpResponse:
         """Установка текущего пользователя владельцем товара"""
-
-        self.object = form.save()
-        self.object.owner = self.request.user
-        self.object.save()
+        product = form.save()
+        product.owner = self.request.user
+        product.save()
         return super().form_valid(form)
 
 
@@ -77,7 +85,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self) -> ModelFormMetaclass:
         """Ограничение редактирования только владельцу и модератору"""
-
         user = self.request.user
         if user == self.object.owner:
             return ProductForm
@@ -96,7 +103,6 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Ограничение удаления только владельцу и модератору"""
-
         response = super().get(request, *args, **kwargs)
         user = self.request.user
         if user == self.object.owner or user.has_perm("catalog.delete_product"):
@@ -109,7 +115,30 @@ class ContactsTemplateView(TemplateView):
 
     template_name = "catalog/contacts.html"
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        """Переопределение метода"""
+    @staticmethod
+    def post(request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Простой ответ на POST запрос"""
         name = request.POST.get("name")
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+
+
+class CategoriesTemplateView(TemplateView):
+    """Контроллер страницы категорий"""
+
+    model = models.Product
+    template_name = "catalog/categories.html"
+    context_object_name = "products"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, QuerySet]:
+        """Передача в шаблон списка категорий, текущей категории и набора товаров"""
+        context = super().get_context_data(**kwargs)
+        context["categories"] = CategoriesServices.get_categories()
+        context["current_category"] = CategoriesServices.get_current_category()
+        context[self.context_object_name] = CategoriesServices.get_queryset()
+        return context
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Обработка запроса выбора категории для отображения"""
+        category_name = request.POST.get("category")
+        CategoriesServices.set_current_category(category_name)
+        return super().get(request, *args, **kwargs)

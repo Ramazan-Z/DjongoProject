@@ -57,25 +57,12 @@
                         <a href="{% url 'catalog:product_confirm_delete' product.pk %}"
                             class="btn btn-danger">Удалить</a>
                         {% endif %}
-                        <a href="{% url 'catalog:home' %}" class="btn btn-primary">Назад</a>
+                        <a href="{{ return_url }}" class="btn btn-primary">Назад</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--nav buttons-->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="{% if last_product %} page-item {%else%} page-item disabled {% endif %}">
-                <a class="page-link" href="{% if last_product %}{% url 'catalog:product_detail' last_product.pk %}{% else %} #
-                    {% endif %}">Предыдущий</a>
-            </li>
-            <li class="{% if next_product %} page-item {% else %} page-item disabled {% endif %}">
-                <a class="page-link" href="{% if next_product %}{% url 'catalog:product_detail' next_product.pk %}{% else %} #
-                    {% endif %}">Следующий</a>
-            </li>
-        </ul>
-    </nav>
     {% include "catalog/includes/footer.html" %}
 </div>
 {% endblock %}
